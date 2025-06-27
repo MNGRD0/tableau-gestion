@@ -1,40 +1,120 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-@section('content')
-    <h1 style="text-align: center;">Connexion administrateur</h1>
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
 
-    @if(session('succes'))
-        <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; width: 80%; margin: 20px auto; text-align: center;">
-            {{ session('succes') }}
-        </div>
-    @endif
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #3490dc;
+        }
 
-    @if($errors->any())
-        <div style="color: red; text-align: center; margin-bottom: 20px;">
-            <ul style="list-style: none;">
-                @foreach($errors->all() as $erreur)
-                    <li>{{ $erreur }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
 
-    <form method="POST" action="{{ route('admin.seConnecter') }}" style="max-width: 400px; margin: 0 auto;">
-        @csrf
+        .champ {
+            position: relative;
+            margin-top: 5px;
+        }
 
-        <label for="nom_admin"><strong>Nom admin :</strong></label>
-        <input type="text" id="nom_admin" name="nom_admin" value="{{ old('nom_admin') }}" required
-               style="width: 100%; padding: 10px; margin-bottom: 15px;">
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 40px 10px 10px; /* espace pour l'œil */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
 
-        <label for="mot_de_passe"><strong>Mot de passe :</strong></label>
-        <input type="password" id="mot_de_passe" name="mot_de_passe" required
-               style="width: 100%; padding: 10px; margin-bottom: 15px;">
+        .toggle-mdp {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            font-size: 16px;
+        }
 
-        <div style="text-align: center;">
-            <button type="submit"
-                    style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
-                🔐 Connexion
-            </button>
-        </div>
-    </form>
-@endsection
+        .btn {
+            width: 100%;
+            background-color: #3490dc;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #2779bd;
+        }
+
+        .erreur {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Connexion Admin</h2>
+
+        <form action="{{ route('connexion') }}" method="POST">
+            @csrf
+
+            <label for="nom_admin">Nom d'utilisateur</label>
+            <div class="champ">
+                <input type="text" name="nom_admin" id="nom_admin" required>
+            </div>
+
+            <label for="mot_de_passe">Mot de passe</label>
+            <div class="champ">
+                <input type="password" name="mot_de_passe" id="mot_de_passe" required>
+                <span class="toggle-mdp" onclick="togglePassword()">👁️</span>
+            </div>
+
+            <button type="submit" class="btn">Se connecter</button>
+
+            @if(session('erreur'))
+                <div class="erreur">{{ session('erreur') }}</div>
+            @endif
+        </form>
+    </div>
+
+    <script>
+        
+        function togglePassword() {
+            const input = document.getElementById('mot_de_passe');
+            const type = input.getAttribute('type');
+            input.setAttribute('type', type === 'password' ? 'text' : 'password');
+        }
+    </script>
+</body>
+</html>

@@ -71,9 +71,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .mobile-nav a {
+        .mobile-nav a, .mobile-nav form {
             margin: 10px 0;
-            color: #333;
         }
 
         .content {
@@ -97,13 +96,28 @@
                 height: 60px;
             }
         }
+
+        .logout-button {
+            background: none;
+            border: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .logout-button:hover {
+            color: white;
+        }
     </style>
 </head>
 <body>
     
     <header>
         <div>
-            <a href="{{ route('clients.index') }}" class="{{ request()->routeIs('clients.index') ? 'active' : '' }}""><img src="{{ asset('images/Finance.png') }}" alt="Logo"></a>
+            <a href="{{ route('clients.index') }}" class="{{ request()->routeIs('clients.index') ? 'active' : '' }}">
+                <img src="{{ asset('images/Finance.png') }}" alt="Logo">
+            </a>
         </div>
 
         <nav>
@@ -112,7 +126,10 @@
             <a href="{{ route('factures.index') }}" class="{{ request()->routeIs('factures.index') ? 'active' : '' }}">Factures</a>
             <a href="{{ route('notes.index') }}" class="{{ request()->routeIs('notes.index') ? 'active' : '' }}">Notes</a>
             <span>| 👤</span>
-            <a href="#">Déconnexion</a>
+            <form action="{{ route('admin.deconnexion') }}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="logout-button">Déconnexion</button>
+            </form>
         </nav>
 
         <div class="burger" onclick="toggleMenu()">
@@ -124,9 +141,12 @@
         <div class="mobile-nav" id="mobileNav">
             <a href="{{ route('clients.index') }}">Clients</a>
             <a href="{{ route('rdv.index') }}">Rendez-vous</a>
-            <a href="#">Factures</a>
-            <a href="#">Notes</a>
-            <a href="#">Déconnexion</a>
+            <a href="{{ route('factures.index') }}">Factures</a>
+            <a href="{{ route('notes.index') }}">Notes</a>
+            <form action="{{ route('admin.deconnexion') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-button">Déconnexion</button>
+            </form>
         </div>
     </header>
 

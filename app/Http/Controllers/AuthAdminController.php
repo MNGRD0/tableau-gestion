@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
+use App\Models\Admin; // pour accéder à la table admin
 
 class AuthAdminController extends Controller
 {
-    public function formulaireConnexion()
+    // ➤ Affiche la page de connexion
+    public function formulaire()
     {
-        return view('admin.connexion');
+        return view('admin.connexion'); // va chercher la vue Blade créée plus haut
     }
 
-    public function seConnecter(Request $requete)
+    // ➤ Traite le formulaire de connexion
+    public function connexion(Request $request)
     {
-        $requete->validate([
-            'nom_admin' => 'required',
-            'mot_de_passe' => 'required',
-        ]);
+        // 1. Récupère les infos du formulaire
+        $nom = $request->input('nom_admin');
+        $mot_de_passe = $request->input('mot_de_passe');
 
-        $admin = Admin::where('nom_admin', $requete->nom_admin)->first();
+        // 2. Cherche un admin avec ce nom
+        $admin = Admin::where('nom_admin', $nom)->first();
 
-        if ($admin && Hash::check($requete->mot_de_passe, $admin->mot_de_passe)) {
-            Session::put('admin_connecte', $admin->id);
-            return redirect()->route('clients.index')->with('succes', 'Connexion réussie.');
+        // 3. Si l'admin existe et le mot de passe est correct
+        if ($admin && password_verify($mot_de_passe, $admin->mot_de_passe)) {
+            // 4. On sauvegarde l'admin en session
+            session(['admin_connecte' => $admin->id]);
+
+            // 5. Redirige vers la page clients
+            return redirect()->route('clients.index');
         }
 
-        return back()->withErrors(['nom_admin' => 'Identifiants invalides'])->withInput();
-    }
-
-    public function seDeconnecter()
-    {
-        Session::forget('admin_connecte');
-        return redirect()->route('admin.connexion')->with('succes', 'Déconnexion réussie.');
+        // Sinon : renvoyer un message d'erreur
+        return redirect()->route('connexion')->with('erreur', 'Identifiants incorrects.');
     }
 }
