@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>En savoir plus</title>
+
+    <!-- ✅ STYLE CSS en interne -->
     <style>
+        /* 🌈 Définition du style global du corps de la page */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background: linear-gradient(to bottom right, #dff6fd, #f9fcff);
+            background: linear-gradient(to bottom right, #dff6fd, #f9fcff); /* dégradé de fond */
             color: #333;
         }
 
+        /* ✅ Conteneur principal qui englobe tout le contenu */
         .container {
             max-width: 1000px;
             margin: 60px auto;
@@ -20,6 +24,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
+        /* ✅ En-tête : image + titre + paragraphe */
         .header {
             display: flex;
             align-items: center;
@@ -44,6 +49,7 @@
             margin-bottom: 30px;
         }
 
+        /* ✅ Bloc de contenu avec titre et fond bleu clair */
         .section {
             background-color: #f1fbff;
             padding: 20px;
@@ -57,6 +63,7 @@
             margin-top: 0;
         }
 
+        /* ✅ Bouton retour en bas de la page */
         .retour {
             text-align: center;
         }
@@ -74,6 +81,7 @@
             background-color: #005f87;
         }
 
+        /* ✅ Responsive : empile les éléments sur petits écrans */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -87,55 +95,63 @@
     </style>
 </head>
 <body>
+
+<!-- ✅ Contenu principal -->
 <div class="container">
+
+    <!-- ✅ En-tête avec image et texte d’introduction -->
     <div class="header">
         <img src="https://cdn-icons-png.flaticon.com/512/3523/3523885.png" alt="Calculatrice">
         <div>
-            <h1>Un outil simple, pensé pour les pros</h1>
-            <p class="text">Pensé d'abord pour un contrôleur de gestion indépendant, ce site a pour but de simplifier au maximum la gestion quotidienne.</p>
+            <h1>Un outil simple, pour les pros et leurs clients</h1>
+            <p class="text">
+                Développé à l’origine pour un contrôleur de gestion indépendant, ce site permet aujourd’hui à la fois de gérer les données clients et d’offrir un espace personnel à ces derniers.
+            </p>
         </div>
     </div>
 
+    <!-- ✅ Sections d’information avec contenu pédagogique -->
     <div class="section">
         <h2>Pourquoi cet outil ?</h2>
         <p>
-            Les outils classiques sont souvent trop lourds, complexes, ou trop généralistes. Celui-ci se concentre uniquement sur l'essentiel :
-            clients, rendez-vous, factures, notes. <br>
-            Il est rapide à prendre en main, visuellement clair, et personnalisable selon les besoins.
+            Les outils classiques sont souvent lourds, compliqués, ou trop généralistes. Celui-ci se concentre sur l’essentiel : clients, rendez-vous, factures, notes.<br>
+            Il offre également une interface simple pour les clients, qui peuvent consulter leurs données en toute autonomie.
         </p>
     </div>
 
     <div class="section">
         <h2>Un design volontairement épuré</h2>
         <p>
-            Le style est simple, mais efficace : pas de surcharge visuelle, tout est direct. Cela rend l'outil particulièrement fluide, même sur des ordinateurs modestes ou en mobilité.
+            L'interface est pensée pour être claire, sans surcharge. Que vous soyez professionnel ou client, tout est facile à prendre en main. L’affichage s’adapte aussi bien aux grands écrans qu’aux smartphones.
         </p>
     </div>
 
     <div class="section">
-        <h2>Des possibilités pour demain</h2>
+        <h2>Des fonctionnalités qui évoluent</h2>
         <p>
-            Le site peut encore évoluer : statistiques, exports Excel, rappels automatiques, envoi de factures par e-mail, etc. Il est prêt à s’adapter à toutes les idées futures.
+            L’outil est conçu pour grandir : ajout de statistiques, envoi automatique de documents, rappels par e-mail, notifications clients… Il est prêt à intégrer toutes vos idées.
         </p>
     </div>
 
     <div class="section">
-        <h2>Et pas que pour les contrôleurs de gestion...</h2>
+        <h2>Pour qui exactement ?</h2>
         <p>
-            Ce type de site conviendrait aussi à :<br>
+            Ce site est idéal pour les contrôleurs de gestion, mais peut convenir aussi à :
             <ul>
-                <li>Coachs et consultants</li>
-                <li>Indépendants du bien-être (sophrologue, ostéo...)</li>
-                <li>Petits commerçants ou auto-entrepreneurs</li>
+                <li>Coachs ou consultants</li>
+                <li>Professionnels du bien-être (sophrologues, ostéos…)</li>
+                <li>Petites entreprises ou indépendants</li>
                 <li>Assistants freelances</li>
-                <li>Formateurs indépendants</li>
+                <li>Formateurs</li>
             </ul>
         </p>
     </div>
 
+    <!-- ✅ Bouton retour à la page d’accueil -->
     <div class="retour">
         <a href="{{ route('accueil') }}">← Retour à l’accueil</a>
     </div>
 </div>
+
 </body>
 </html>

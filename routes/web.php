@@ -7,6 +7,8 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClientInscriptionController; // Contrôleur pour l'inscription client
+use App\Http\Controllers\ClientConnexionController;
 
 // --- Accueil public (non connecté) ---
 Route::get('/', function () {
@@ -15,13 +17,13 @@ Route::get('/', function () {
 
 // --- Page En savoir plus ---
 Route::get('/en-savoir-plus', function () {
-    return view('en_savoir_plus'); // page \"en savoir plus\" stylisée
+    return view('en_savoir_plus'); // page "en savoir plus" stylisée
 })->name('en_savoir_plus');
 
 // --- Authentification Admin ---
 Route::get('/connexion', [AuthAdminController::class, 'formulaire'])->name('connexion'); // affiche formulaire
 Route::post('/connexion', [AuthAdminController::class, 'connexion']); // traite la connexion
-Route::post('/admin/deconnexion', [AdminController::class, 'deconnexion'])->name('admin.deconnexion'); // déconnecte l'admin
+Route::post('/admin/deconnexion', [AuthAdminController::class, 'deconnexion'])->name('admin.deconnexion'); // déconnecte l'admin
 
 // --- Clients ---
 Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
@@ -62,6 +64,8 @@ Route::put('/factures/{id}', [FactureController::class, 'mettreAJour'])->name('f
 Route::delete('/factures/{id}', [FactureController::class, 'supprimer'])->name('factures.supprimer');
 Route::get('/factures/{id}/pdf', [FactureController::class, 'genererPDF'])->name('factures.pdf');
 Route::get('/factures/{id}', [FactureController::class, 'afficher'])->name('factures.afficher');
+Route::get('/mon-espace/facture/{id}/pdf', [FactureController::class, 'telechargerPDFClient'])->name('client.facture.pdf');
+
 
 // --- Notes ---
 Route::get('/notes', [NoteController::class, 'index'])->name('notes.index');
@@ -75,3 +79,21 @@ Route::delete('/notes/supprimer-toutes-definitivement', [NoteController::class, 
 Route::get('/notes/{id}/modifier', [NoteController::class, 'modifier'])->name('notes.modifier');
 Route::put('/notes/{id}/modifier', [NoteController::class, 'mettreAJour'])->name('notes.mettreAJour');
 Route::get('/notes/{id}', [NoteController::class, 'afficher'])->name('notes.afficher');
+
+// --- Inscription des clients (partie publique) ---
+Route::get('/inscription', [ClientInscriptionController::class, 'afficherFormulaire'])->name('client.inscription'); // Affiche le formulaire d'inscription
+Route::post('/inscription', [ClientInscriptionController::class, 'inscrire'])->name('client.inscrire'); // Traite l'inscription client
+
+
+// --- Connexion client (utilisateur) ---
+Route::get('/connexion-client', [ClientConnexionController::class, 'formulaire'])->name('client.connexion');
+Route::post('/connexion-client', [ClientConnexionController::class, 'connecter'])->name('client.connecter');
+Route::post('/deconnexion-client', [ClientConnexionController::class, 'deconnexion'])->name('client.deconnexion');
+
+// --- Espace client connecté ---
+Route::get('/mon-espace', [ClientController::class, 'espace'])->name('client.espace');
+Route::get('/mon-profil/modifier', [ClientController::class, 'modifierProfil'])->name('client.profil.modifier');
+Route::post('/mon-profil/modifier', [ClientController::class, 'mettreAJourProfil'])->name('client.profil.mettreAJour');
+
+// --- Téléchargement PDF d'une facture (espace client) ---
+Route::get('/mes-factures/{id}/pdf', [FactureController::class, 'telechargerPDFClient'])->name('client.factures.pdf');

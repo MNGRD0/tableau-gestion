@@ -78,7 +78,8 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => 'fr', //Modifier en français pour les message d'erreur de connexion qui étaient en en
+
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

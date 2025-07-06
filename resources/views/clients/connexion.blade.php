@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Connexion Admin</title>
+    <title>Connexion Client</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,8 +40,9 @@
             margin-top: 5px;
         }
 
-        input[type="text"],
-        input[type="password"] {
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
             width: 100%;
             padding: 10px 40px 10px 10px;
             border-radius: 5px;
@@ -97,37 +98,36 @@
 </head>
 <body>
     <main class="login-box">
-        <!-- "main" indique que c'est le contenu principal de la page (meilleure accessibilité) -->
-        <h2>Connexion Admin</h2>
+        <h2>Connexion Client</h2>
 
-        <form action="{{ route('connexion') }}" method="POST">
-            <!-- Envoie le formulaire vers la route nommée "connexion" (définie dans web.php) avec la méthode POST -->
+        <form action="{{ route('client.connecter') }}" method="POST">
+            <!-- Le formulaire envoie les données à la route nommée "client.connecter" -->
             @csrf
-            <!-- Jeton CSRF pour la sécurité (protège contre les fausses soumissions de formulaire) -->
+            <!-- Jeton CSRF pour la sécurité contre les fausses soumissions -->
 
-            <label for="nom_admin">Nom d'utilisateur</label>
+            <label for="email_client">Adresse email</label>
             <div class="champ">
-                <input type="text" name="nom_admin" id="nom_admin" required>
-                <!-- Champ pour entrer le nom d'utilisateur (obligatoire) -->
+                <input type="email" name="email_client" id="email_client" required>
+                <!-- Champ pour entrer l'email, avec type "email" et requis -->
             </div>
 
-            <label for="mot_de_passe">Mot de passe</label>
+            <label for="mot_de_passe_client">Mot de passe</label>
             <div class="champ">
-                <input type="password" name="mot_de_passe" id="mot_de_passe" required>
+                <input type="password" name="mot_de_passe_client" id="mot_de_passe_client" required>
                 <!-- Champ pour entrer le mot de passe (obligatoire) -->
 
                 <span class="toggle-mdp" onclick="togglePassword()" title="Afficher ou masquer le mot de passe">👁️</span>
-                <!-- Petit bouton œil pour afficher/cacher le mot de passe  et le span sert à mettre l'oeil
-                  en ligne et pas aller à la ligne directement 
-                  le onclick événement pour que quand on clique ça transforme ça change le type du champ (mot de passe ↔ texte)-->
+                <!-- Icône œil cliquable pour afficher/cacher le mot de passe -->
             </div>
 
             <button type="submit" class="btn">Se connecter</button>
-            <!-- Bouton pour envoyer le formulaire -->
+            <!-- Bouton pour soumettre le formulaire -->
 
-            @if(session('erreur'))
-                <div class="erreur">{{ session('erreur') }}</div>
-                <!-- Si une erreur existe dans la session (ex : identifiants incorrects), on l'affiche ici -->
+            @if ($errors->any()) <!-- "Est-ce qu’il y a au moins une erreur de validation ?" -->
+                <div class="erreur">
+                    {{ $errors->first() }} <!-- Ça affiche le premier message d’erreur de la liste. -->
+                </div>
+                <!-- Affiche la première erreur de validation retournée par Laravel -->
             @endif
         </form>
 
@@ -136,16 +136,11 @@
     </main>
 
     <script>
-        // Pour la visibilité du mot de passe : 
+        // Fonction pour afficher/masquer le mot de passe
         function togglePassword() {
-            const input = document.getElementById('mot_de_passe');
-            // On récupère l'élément du champ mot de passe
-
+            const input = document.getElementById('mot_de_passe_client');
             const type = input.getAttribute('type');
-            // On regarde si le type est "password" ou "text"
-
             input.setAttribute('type', type === 'password' ? 'text' : 'password');
-            // Si c'est "password", on le change en "text" pour l'afficher, sinon on le remet en "password"
         }
     </script>
 </body>

@@ -7,34 +7,30 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Méthode qui s'exécute lors de la migration.
      */
     public function up(): void
     {
         Schema::create('client', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom');
-            $table->string('email_client');
-            $table->string('telephone_client', 17);
-            $table->string('adresse_client');
-            $table->string('cp_client', 10);
-            $table->string('ville_client');
-            $table->string('commentaire_client')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-
+            $table->id(); // Clé primaire auto-incrémentée
+            $table->string('nom'); // Nom du client
+            $table->string('email_client')->unique(); // Email du client (doit être unique pour pouvoir se connecter)
+            $table->string('mot_de_passe_client'); // Mot de passe du client (sera hashé)
+            $table->string('telephone_client', 17); // Numéro de téléphone
+            $table->string('adresse_client'); // Adresse complète
+            $table->string('cp_client', 10); // Code postal
+            $table->string('ville_client'); // Ville
+            $table->string('commentaire_client')->nullable(); // Champ optionnel pour commentaires
+            $table->timestamps(); // Champs created_at et updated_at automatiquement gérés par Laravel
+            $table->softDeletes(); // Ajoute un champ deleted_at pour la suppression logique
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Méthode qui s'exécute pour annuler la migration (rollback).
      */
     public function down(): void
     {
-        Schema::dropIfExists('client');
-        Schema::table('client', function (Blueprint $table) {
-            $table->dropColumn('commentaire_client');
-        });
-        
+        Schema::dropIfExists('client'); // Supprime la table client si elle existe
     }
 };
